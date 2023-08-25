@@ -7,6 +7,7 @@
 import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
@@ -31,6 +32,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // add the item
     public void enqueue(Item item) {
+        if (item == null)
+            throw new IllegalArgumentException();
         if (size == array.length)
             resize(size * 2);
         array[last++] = item;
@@ -39,6 +42,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     // remove and return a random item
     public Item dequeue() {
+        if (isEmpty())
+            throw new NoSuchElementException();
         int randomIndex = StdRandom.uniformInt(size);
         Item returnedValue = array[randomIndex];
         last--;
@@ -46,13 +51,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         // so that we can keep the null value in the end of the array
         array[last] = null;
         size--;
-        if (size == array.length / 4)
+        if (size > 0 && size == array.length / 4)
             resize(array.length / 2);
         return returnedValue;
     }
 
     // return a random item (but do not remove it)
     public Item sample() {
+        if (isEmpty())
+            throw new NoSuchElementException();
         int randomIndex = StdRandom.uniformInt(size);
         Item returnedValue = array[randomIndex];
         return returnedValue;
@@ -96,23 +103,34 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
 
         public Item next() {
+            if (!hasNext())
+                throw new NoSuchElementException();
             return copy[index++];
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
         }
     }
 
     public static void main(String[] args) {
-        RandomizedQueue queue = new RandomizedQueue();
-        queue.enqueue(1);
-        queue.enqueue(7);
-        queue.enqueue(10);
-        queue.enqueue(15);
-        queue.enqueue(20);
-        System.out.println(queue.dequeue());
-        System.out.println("size :" + queue.size());
-        System.out.println("isEmpty :" + queue.isEmpty());
-        for (Object element : queue) {
-            System.out.print((int) element);
-        }
-        System.out.println();
+        // RandomizedQueue queue = new RandomizedQueue();
+        // queue.enqueue(1);
+        // queue.enqueue(7);
+        // queue.enqueue(10);
+        // queue.enqueue(15);
+        // queue.enqueue(20);
+        // System.out.println(queue.dequeue());
+        // System.out.println("size :" + queue.size());
+        // System.out.println("isEmpty :" + queue.isEmpty());
+        // for (Object element : queue) {
+        //     System.out.print((int) element);
+        // }
+        // System.out.println();
+        RandomizedQueue<Integer> queue = new RandomizedQueue<>();
+        queue.size();
+        queue.enqueue(161);
+        queue.dequeue();
+        queue.enqueue(90);
     }
 }
